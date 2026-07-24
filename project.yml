@@ -57,6 +57,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.sideways.taskpilotai.tests
+        GENERATE_INFOPLIST_FILE: YES
 
   TaskPilotAIUITests:
     type: bundle.ui-testing
@@ -68,6 +69,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.sideways.taskpilotai.uitests
+        GENERATE_INFOPLIST_FILE: YES
 
 schemes:
   TaskPilotAI:
