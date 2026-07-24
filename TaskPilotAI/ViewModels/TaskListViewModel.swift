@@ -66,7 +66,7 @@ final class TaskListViewModel {
     }
 
     func signals(for task: TaskItem) -> TaskSignals {
-        prioritizationService.signals(for: task)
+        prioritizationService.signals(for: task, now: .now)
     }
 
     func complete(_ task: TaskItem) {
