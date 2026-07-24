@@ -1,0 +1,45 @@
+name: Build Sideloadable IPA
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build-ipa:
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Archive (unsigned, for real devices)
+        run: |
+          xcodebuild archive \
+            -project TaskPilotAI.xcodeproj \
+            -scheme TaskPilotAI \
+            -archivePath build/TaskPilotAI.xcarchive \
+            -destination "generic/platform=iOS" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM=""
+
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p ipa-build/Payload
+          cp -r build/TaskPilotAI.xcarchive/Products/Applications/TaskPilotAI.app ipa-build/Payload/
+          cd ipa-build
+          zip -r ../TaskPilotAI-unsigned.ipa Payload
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaskPilotAI-unsigned-ipa
+          path: TaskPilotAI-unsigned.ipa
+          retention-days: 14
