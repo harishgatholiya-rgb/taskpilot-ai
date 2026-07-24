@@ -81,6 +81,7 @@ struct NextTaskCardView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         VStack(spacing: Theme.Spacing.lg) {
@@ -94,3 +95,4 @@ struct NextTaskCardView: View {
         }
     }
 }
+#endif

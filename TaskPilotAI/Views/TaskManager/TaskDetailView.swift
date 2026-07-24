@@ -193,8 +193,10 @@ struct TaskDetailView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
         TaskDetailView(container: .preview(), task: TaskItem.previewSeed[0])
     }
 }
+#endif

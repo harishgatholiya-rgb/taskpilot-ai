@@ -12,6 +12,7 @@ struct PriorityBadgeView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     HStack(spacing: Theme.Spacing.md) {
         ForEach(TaskPriority.allCases) { priority in
@@ -20,3 +21,4 @@ struct PriorityBadgeView: View {
     }
     .padding()
 }
+#endif

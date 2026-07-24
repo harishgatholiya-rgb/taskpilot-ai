@@ -149,6 +149,8 @@ struct TaskListView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     TaskListView(container: .preview())
 }
+#endif

@@ -13,6 +13,7 @@ struct CategoryChipView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
         ForEach(TaskCategory.allCases) { category in
@@ -21,3 +22,4 @@ struct CategoryChipView: View {
     }
     .padding()
 }
+#endif

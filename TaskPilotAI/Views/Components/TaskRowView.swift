@@ -66,6 +66,7 @@ struct TaskRowView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     List {
         TaskRowView(task: TaskItem.previewSeed[0]) {}
@@ -73,3 +74,4 @@ struct TaskRowView: View {
         TaskRowView(task: TaskItem.previewSeed[5]) {}
     }
 }
+#endif

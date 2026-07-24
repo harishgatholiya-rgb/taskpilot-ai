@@ -27,6 +27,7 @@ struct EmptyStateView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     EmptyStateView(
         systemImage: "checkmark.circle",
@@ -34,3 +35,4 @@ struct EmptyStateView: View {
         message: "Nothing due today. Enjoy the calm."
     )
 }
+#endif

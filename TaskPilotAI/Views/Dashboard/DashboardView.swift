@@ -142,6 +142,8 @@ struct DashboardView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     DashboardView(container: .preview())
 }
+#endif

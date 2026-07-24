@@ -39,6 +39,7 @@ struct ProgressRingView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     HStack(spacing: Theme.Spacing.xl) {
         ProgressRingView(progress: 0.0)
@@ -47,3 +48,4 @@ struct ProgressRingView: View {
     }
     .padding()
 }
+#endif

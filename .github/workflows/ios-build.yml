@@ -22,16 +22,29 @@ jobs:
       - name: Generate Xcode project
         run: xcodegen generate
 
+      - name: Pick an available iPhone simulator
+        id: sim
+        run: |
+          NAME=$(xcrun simctl list devices available iOS -j \
+            | jq -r '[.devices[][] | select(.name | test("iPhone"))][0].name')
+          if [ -z "$NAME" ] || [ "$NAME" = "null" ]; then
+            echo "No available iPhone simulator found" >&2
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "Selected simulator: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
       - name: Build
         run: |
           xcodebuild build \
             -project TaskPilotAI.xcodeproj \
             -scheme TaskPilotAI \
-            -destination "platform=iOS Simulator,name=iPhone 16,OS=latest"
+            -destination "platform=iOS Simulator,name=${{ steps.sim.outputs.name }},OS=latest"
 
       - name: Test
         run: |
           xcodebuild test \
             -project TaskPilotAI.xcodeproj \
             -scheme TaskPilotAI \
-            -destination "platform=iOS Simulator,name=iPhone 16,OS=latest"
+            -destination "platform=iOS Simulator,name=${{ steps.sim.outputs.name }},OS=latest"

@@ -18,6 +18,8 @@ struct RootTabView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     RootTabView(container: .preview())
 }
+#endif
