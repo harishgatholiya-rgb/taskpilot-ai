@@ -1,13 +1,13 @@
 import AppIntents
 import Foundation
 
-/// "Add a task in My Task" — Siri collects the title (and optionally a due
+/// "Add a task in TaskBuddy" — Siri collects the title (and optionally a due
 /// date) and this creates the task without opening the app. Also
 /// recognized in Hindi (see `TaskPilotShortcutsProvider`); the spoken
 /// confirmation matches whichever language the device prefers.
 struct AddTaskIntent: AppIntent {
     static var title: LocalizedStringResource = "Add Task"
-    static var description = IntentDescription("Adds a new task to My Task.")
+    static var description = IntentDescription("Adds a new task to TaskBuddy.")
     static var openAppWhenRun: Bool = false
 
     @Parameter(title: "Title")
@@ -17,7 +17,7 @@ struct AddTaskIntent: AppIntent {
     var dueDate: Date?
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Add \(\.$taskTitle) to My Task") {
+        Summary("Add \(\.$taskTitle) to TaskBuddy") {
             \.$dueDate
         }
     }
@@ -42,8 +42,8 @@ struct AddTaskIntent: AppIntent {
         }
 
         if let dueDateLabel = task.dueDateLabel {
-            return "Added \"\(taskTitle)\" to My Task, due \(dueDateLabel)."
+            return "Added \"\(taskTitle)\" to TaskBuddy, due \(dueDateLabel)."
         }
-        return "Added \"\(taskTitle)\" to My Task."
+        return "Added \"\(taskTitle)\" to TaskBuddy."
     }
 }
