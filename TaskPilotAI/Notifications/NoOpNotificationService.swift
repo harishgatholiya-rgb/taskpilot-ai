@@ -10,5 +10,7 @@ final class NoOpNotificationService: NotificationServiceProtocol {
     func scheduleReminder(for task: TaskItem) {}
     func cancelReminder(for task: TaskItem) {}
     func scheduleSnoozeReminder(for task: TaskItem, minutes: Int) {}
+    func rescheduleHourlySummary(title: String, body: String) {}
+    func cancelHourlySummary() {}
 }
 #endif

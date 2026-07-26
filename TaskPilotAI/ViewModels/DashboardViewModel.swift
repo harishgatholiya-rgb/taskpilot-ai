@@ -25,15 +25,18 @@ final class DashboardViewModel {
     private let taskRepository: TaskRepositoryProtocol
     private let prioritizationService: TaskPrioritizationServiceProtocol
     private let taskActionService: TaskActionServiceProtocol
+    private let hourlySummaryScheduler: HourlySummarySchedulerProtocol
 
     init(
         taskRepository: TaskRepositoryProtocol,
         prioritizationService: TaskPrioritizationServiceProtocol,
-        taskActionService: TaskActionServiceProtocol
+        taskActionService: TaskActionServiceProtocol,
+        hourlySummaryScheduler: HourlySummarySchedulerProtocol
     ) {
         self.taskRepository = taskRepository
         self.prioritizationService = prioritizationService
         self.taskActionService = taskActionService
+        self.hourlySummaryScheduler = hourlySummaryScheduler
     }
 
     func refresh() {
@@ -51,6 +54,7 @@ final class DashboardViewModel {
                 .sorted { $0.updatedAt > $1.updatedAt }
 
             errorMessage = nil
+            hourlySummaryScheduler.refresh()
         } catch {
             errorMessage = "Couldn't load your tasks. Pull to refresh to try again."
         }

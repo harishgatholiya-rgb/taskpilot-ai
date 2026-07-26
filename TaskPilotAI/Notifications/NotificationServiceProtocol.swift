@@ -20,6 +20,19 @@ protocol NotificationServiceProtocol {
     /// regardless of the task's own due date. Backs the notification's
     /// "Snooze" action.
     func scheduleSnoozeReminder(for task: TaskItem, minutes: Int)
+
+    /// Replaces the repeating hourly summary notification's content and
+    /// (re-)schedules it to fire every hour, including while the phone is
+    /// locked or the app isn't running — that's a genuine `UNUserNotificationCenter`
+    /// capability. The content itself is only as fresh as the last call to
+    /// this method, since iOS notification content is fixed at schedule
+    /// time and can't be recomputed by the app at delivery time without a
+    /// separate Notification Service Extension.
+    func rescheduleHourlySummary(title: String, body: String)
+
+    /// Cancels the hourly summary notification. Safe to call even if none
+    /// is scheduled.
+    func cancelHourlySummary()
 }
 
 /// Identifiers shared between `LocalNotificationService` (which schedules

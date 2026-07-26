@@ -42,9 +42,17 @@ Implemented:
   whenever a task has a due date (15 min before if it has a due *time*, or
   9am on the day if it's just a due *date*), with "Mark Complete" and
   "Snooze 15 min" notification actions handled by `AppDelegate`
-- Siri / App Intents: "Add a task in TaskPilot AI" (creates a task, Siri
-  fills in title/due date) and "What's my next task in TaskPilot AI"
-  (Siri speaks back the current next-best-task) — see `AppIntents/`
+- Hourly summary notification (`HourlySummaryScheduler`): a repeating
+  notification (overdue/due-today counts + next task) fires every hour via
+  `UNUserNotificationCenter`, including while the phone is locked or the
+  app isn't running. Content refreshes whenever the Dashboard is viewed —
+  iOS doesn't let apps recompute notification content at delivery time
+  without a separate Notification Service Extension, so it's only as
+  fresh as the last Dashboard visit.
+- Siri / App Intents (English + Hindi phrases): "Add a task in TaskBuddy"
+  (creates a task, Siri fills in title/due date) and "What's my next task
+  in TaskBuddy" (Siri speaks back the current next-best-task, in Hindi if
+  the device's preferred language is Hindi) — see `AppIntents/`
 
 Not yet implemented (architecture leaves room for these, per the product spec):
 

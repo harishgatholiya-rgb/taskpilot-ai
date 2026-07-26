@@ -47,7 +47,26 @@ final class LocalNotificationService: NotificationServiceProtocol {
         schedule(taskID: task.id, title: task.title, body: "Snoozed reminder", fireDate: fireDate)
     }
 
+    func rescheduleHourlySummary(title: String, body: String) {
+        cancelHourlySummary()
+
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3600, repeats: true)
+        let request = UNNotificationRequest(identifier: Self.hourlySummaryIdentifier, content: content, trigger: trigger)
+        center.add(request)
+    }
+
+    func cancelHourlySummary() {
+        center.removePendingNotificationRequests(withIdentifiers: [Self.hourlySummaryIdentifier])
+    }
+
     // MARK: - Private
+
+    private static let hourlySummaryIdentifier = "HOURLY_TASK_SUMMARY"
 
     private func schedule(taskID: UUID, title: String, body: String, fireDate: Date) {
         let content = UNMutableNotificationContent()

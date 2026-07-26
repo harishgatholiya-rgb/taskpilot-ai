@@ -11,15 +11,22 @@ final class AppDependencyContainer {
     let prioritizationService: TaskPrioritizationServiceProtocol
     let taskActionService: TaskActionServiceProtocol
     let notificationService: NotificationServiceProtocol
+    let hourlySummaryScheduler: HourlySummarySchedulerProtocol
 
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
         let repository = SwiftDataTaskRepository(modelContext: modelContainer.mainContext)
         self.taskRepository = repository
-        self.prioritizationService = RuleBasedTaskPrioritizationService()
+        let prioritization = RuleBasedTaskPrioritizationService()
+        self.prioritizationService = prioritization
         let notifications = LocalNotificationService()
         self.notificationService = notifications
         self.taskActionService = TaskActionService(taskRepository: repository, notificationService: notifications)
+        self.hourlySummaryScheduler = HourlySummaryScheduler(
+            taskRepository: repository,
+            prioritizationService: prioritization,
+            notificationService: notifications
+        )
     }
 
     static func makeProductionModelContainer() throws -> ModelContainer {
@@ -34,7 +41,8 @@ final class AppDependencyContainer {
         DashboardViewModel(
             taskRepository: taskRepository,
             prioritizationService: prioritizationService,
-            taskActionService: taskActionService
+            taskActionService: taskActionService,
+            hourlySummaryScheduler: hourlySummaryScheduler
         )
     }
 
