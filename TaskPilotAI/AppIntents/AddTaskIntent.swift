@@ -1,7 +1,10 @@
 import AppIntents
+import Foundation
 
-/// "Add a task in My Task" — Siri collects the title (and optionally a
-/// due date) and this creates the task without opening the app.
+/// "Add a task in My Task" — Siri collects the title (and optionally a due
+/// date) and this creates the task without opening the app. Also
+/// recognized in Hindi (see `TaskPilotShortcutsProvider`); the spoken
+/// confirmation matches whichever language the device prefers.
 struct AddTaskIntent: AppIntent {
     static var title: LocalizedStringResource = "Add Task"
     static var description = IntentDescription("Adds a new task to My Task.")
@@ -27,9 +30,20 @@ struct AddTaskIntent: AppIntent {
         try container.taskRepository.create(task)
         container.notificationService.scheduleReminder(for: task)
 
-        if let dueDateLabel = task.dueDateLabel {
-            return .result(dialog: "Added \"\(taskTitle)\" to My Task, due \(dueDateLabel).")
+        return .result(dialog: IntentDialog(stringLiteral: confirmationText(for: task)))
+    }
+
+    private func confirmationText(for task: TaskItem) -> String {
+        if PreferredLanguage.isHindi {
+            if let dueDateLabel = task.dueDateLabel {
+                return "\"\(taskTitle)\" माई टास्क में जोड़ दिया गया, \(dueDateLabel) तक।"
+            }
+            return "\"\(taskTitle)\" माई टास्क में जोड़ दिया गया।"
         }
-        return .result(dialog: "Added \"\(taskTitle)\" to My Task.")
+
+        if let dueDateLabel = task.dueDateLabel {
+            return "Added \"\(taskTitle)\" to My Task, due \(dueDateLabel)."
+        }
+        return "Added \"\(taskTitle)\" to My Task."
     }
 }
