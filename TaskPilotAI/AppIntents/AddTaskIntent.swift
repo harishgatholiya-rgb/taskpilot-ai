@@ -1,10 +1,10 @@
 import AppIntents
 
-/// "Add a task in TaskPilot AI" — Siri collects the title (and optionally a
+/// "Add a task in My Task" — Siri collects the title (and optionally a
 /// due date) and this creates the task without opening the app.
 struct AddTaskIntent: AppIntent {
     static var title: LocalizedStringResource = "Add Task"
-    static var description = IntentDescription("Adds a new task to TaskPilot AI.")
+    static var description = IntentDescription("Adds a new task to My Task.")
     static var openAppWhenRun: Bool = false
 
     @Parameter(title: "Title")
@@ -14,7 +14,7 @@ struct AddTaskIntent: AppIntent {
     var dueDate: Date?
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Add \(\.$taskTitle) to TaskPilot AI") {
+        Summary("Add \(\.$taskTitle) to My Task") {
             \.$dueDate
         }
     }
@@ -28,8 +28,8 @@ struct AddTaskIntent: AppIntent {
         container.notificationService.scheduleReminder(for: task)
 
         if let dueDateLabel = task.dueDateLabel {
-            return .result(dialog: "Added \"\(taskTitle)\" to TaskPilot AI, due \(dueDateLabel).")
+            return .result(dialog: "Added \"\(taskTitle)\" to My Task, due \(dueDateLabel).")
         }
-        return .result(dialog: "Added \"\(taskTitle)\" to TaskPilot AI.")
+        return .result(dialog: "Added \"\(taskTitle)\" to My Task.")
     }
 }

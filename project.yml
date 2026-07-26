@@ -26,8 +26,8 @@ targets:
       path: TaskPilotAI/Info.plist
       properties:
         UILaunchScreen: {}
-        CFBundleDisplayName: TaskPilot AI
-        NSUserNotificationsUsageDescription: TaskPilot AI uses notifications to remind you about upcoming and overdue tasks.
+        CFBundleDisplayName: My Task
+        NSUserNotificationsUsageDescription: My Task uses notifications to remind you about upcoming and overdue tasks.
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         UIApplicationSceneManifest:

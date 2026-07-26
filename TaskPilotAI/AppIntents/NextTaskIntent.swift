@@ -1,11 +1,11 @@
 import AppIntents
 
-/// "What's my next task in TaskPilot AI" — Siri speaks back whatever the
+/// "What's my next task in My Task" — Siri speaks back whatever the
 /// prioritization service currently considers the next best task, using
 /// the same rule-based logic the Dashboard's hero card shows.
 struct NextTaskIntent: AppIntent {
     static var title: LocalizedStringResource = "Show Next Task"
-    static var description = IntentDescription("Tells you the next best task to work on in TaskPilot AI.")
+    static var description = IntentDescription("Tells you the next best task to work on in My Task.")
     static var openAppWhenRun: Bool = false
 
     @MainActor
