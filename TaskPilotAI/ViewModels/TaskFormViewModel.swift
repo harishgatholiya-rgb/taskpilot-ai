@@ -23,6 +23,7 @@ final class TaskFormViewModel {
     private(set) var errorMessage: String?
 
     private let taskRepository: TaskRepositoryProtocol
+    private let notificationService: NotificationServiceProtocol
     private let editingTask: TaskItem?
 
     var isEditing: Bool { editingTask != nil }
@@ -32,8 +33,9 @@ final class TaskFormViewModel {
         title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    init(taskRepository: TaskRepositoryProtocol, editingTask: TaskItem? = nil) {
+    init(taskRepository: TaskRepositoryProtocol, notificationService: NotificationServiceProtocol, editingTask: TaskItem? = nil) {
         self.taskRepository = taskRepository
+        self.notificationService = notificationService
         self.editingTask = editingTask
 
         guard let editingTask else { return }
@@ -92,6 +94,7 @@ final class TaskFormViewModel {
                 editingTask.isWaitingOnOthers = isWaitingOnOthers
                 editingTask.isPinned = isPinned
                 try taskRepository.update(editingTask)
+                notificationService.scheduleReminder(for: editingTask)
             } else {
                 let newTask = TaskItem(
                     title: trimmedTitle,
@@ -107,6 +110,7 @@ final class TaskFormViewModel {
                     isPinned: isPinned
                 )
                 try taskRepository.create(newTask)
+                notificationService.scheduleReminder(for: newTask)
             }
             errorMessage = nil
             return true

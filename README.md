@@ -38,12 +38,18 @@ Implemented:
   date/time, category, notes, tags, estimated time, repeat rule
 - Rule-based prioritization service (`TaskPrioritizationService`) computing
   next-best-task, urgent/important/quick-win/overdue classification
+- Local notifications (`NotificationService`): a reminder is scheduled
+  whenever a task has a due date (15 min before if it has a due *time*, or
+  9am on the day if it's just a due *date*), with "Mark Complete" and
+  "Snooze 15 min" notification actions handled by `AppDelegate`
+- Siri / App Intents: "Add a task in TaskPilot AI" (creates a task, Siri
+  fills in title/due date) and "What's my next task in TaskPilot AI"
+  (Siri speaks back the current next-best-task) — see `AppIntents/`
 
 Not yet implemented (architecture leaves room for these, per the product spec):
 
-- Natural language task input
-- Siri / App Intents
-- Notifications (local reminders, snooze, actions)
+- Natural language task input (typed free-text parsing, not Siri's own
+  slot-filling — that part already works via App Intents above)
 - Widgets (Home Screen + Lock Screen)
 - Focus Mode
 - iCloud sync
@@ -66,8 +72,8 @@ TaskPilotAI/
     Components/   Shared, reusable SwiftUI views
   Utilities/      Formatting, small pure helpers
   Extensions/     Foundation/SwiftUI extensions
-  AppIntents/     (reserved for Siri/Shortcuts work)
-  Notifications/  (reserved for UserNotifications work)
+  AppIntents/     Siri/Shortcuts intents + phrase registration
+  Notifications/  Local reminder scheduling + notification action handling
   Widgets/        (reserved for WidgetKit extension)
 TaskPilotAITests/     Unit tests
 TaskPilotAIUITests/   UI tests

@@ -144,7 +144,7 @@ struct TaskFormView: View {
 #if DEBUG
 #Preview {
     NavigationStack {
-        TaskFormView(viewModel: TaskFormViewModel(taskRepository: InMemoryTaskRepository()))
+        TaskFormView(viewModel: TaskFormViewModel(taskRepository: InMemoryTaskRepository(), notificationService: NoOpNotificationService()))
     }
 }
 #endif

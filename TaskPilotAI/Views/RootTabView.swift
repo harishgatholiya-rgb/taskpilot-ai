@@ -15,6 +15,9 @@ struct RootTabView: View {
                     Label("Tasks", systemImage: "checklist")
                 }
         }
+        .onAppear {
+            container.notificationService.requestAuthorizationIfNeeded()
+        }
     }
 }
 

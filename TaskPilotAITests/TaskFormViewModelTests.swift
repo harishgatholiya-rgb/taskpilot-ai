@@ -5,7 +5,7 @@ import Foundation
 @MainActor
 struct TaskFormViewModelTests {
     @Test func saveIsDisabledUntilTitleIsProvided() {
-        let viewModel = TaskFormViewModel(taskRepository: InMemoryTaskRepository())
+        let viewModel = TaskFormViewModel(taskRepository: InMemoryTaskRepository(), notificationService: NoOpNotificationService())
 
         #expect(viewModel.isSaveDisabled)
 
@@ -18,7 +18,7 @@ struct TaskFormViewModelTests {
 
     @Test func savingNewTaskCreatesItInRepository() throws {
         let repository = InMemoryTaskRepository()
-        let viewModel = TaskFormViewModel(taskRepository: repository)
+        let viewModel = TaskFormViewModel(taskRepository: repository, notificationService: NoOpNotificationService())
         viewModel.title = "Call the plumber"
         viewModel.priority = .high
         viewModel.estimatedMinutesText = "20"
@@ -36,7 +36,7 @@ struct TaskFormViewModelTests {
     @Test func savingExistingTaskUpdatesInPlaceRatherThanDuplicating() throws {
         let repository = InMemoryTaskRepository()
         let existing = try repository.create(TaskItem(title: "Draft memo", priority: .low))
-        let viewModel = TaskFormViewModel(taskRepository: repository, editingTask: existing)
+        let viewModel = TaskFormViewModel(taskRepository: repository, notificationService: NoOpNotificationService(), editingTask: existing)
 
         viewModel.title = "Finalize memo"
         viewModel.priority = .urgent
@@ -50,7 +50,7 @@ struct TaskFormViewModelTests {
     }
 
     @Test func commitTagDraftAddsTrimmedTagAndPreventsDuplicates() {
-        let viewModel = TaskFormViewModel(taskRepository: InMemoryTaskRepository())
+        let viewModel = TaskFormViewModel(taskRepository: InMemoryTaskRepository(), notificationService: NoOpNotificationService())
 
         viewModel.tagDraft = "  urgent  "
         viewModel.commitTagDraft()
@@ -62,7 +62,7 @@ struct TaskFormViewModelTests {
 
     @Test func clearingDueDateAlsoClearsDueTimeOnSave() throws {
         let repository = InMemoryTaskRepository()
-        let viewModel = TaskFormViewModel(taskRepository: repository)
+        let viewModel = TaskFormViewModel(taskRepository: repository, notificationService: NoOpNotificationService())
         viewModel.title = "No due date task"
         viewModel.hasDueDate = false
         viewModel.hasDueTime = true

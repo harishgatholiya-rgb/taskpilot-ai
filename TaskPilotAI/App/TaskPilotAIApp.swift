@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct TaskPilotAIApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let container: AppDependencyContainer
 
     init() {
@@ -16,6 +17,9 @@ struct TaskPilotAIApp: App {
     var body: some Scene {
         WindowGroup {
             RootTabView(container: container)
+                .task {
+                    appDelegate.container = container
+                }
         }
     }
 }

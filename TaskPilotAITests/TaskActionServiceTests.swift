@@ -6,7 +6,7 @@ import Foundation
 struct TaskActionServiceTests {
     @Test func completeMarksTaskCompletedWithTimestamp() throws {
         let repository = InMemoryTaskRepository()
-        let service = TaskActionService(taskRepository: repository)
+        let service = TaskActionService(taskRepository: repository, notificationService: NoOpNotificationService())
         let task = try repository.create(TaskItem(title: "Ship it", priority: .high))
 
         try service.complete(task)
@@ -17,7 +17,7 @@ struct TaskActionServiceTests {
 
     @Test func completingRepeatingTaskSpawnsNextOccurrence() throws {
         let repository = InMemoryTaskRepository()
-        let service = TaskActionService(taskRepository: repository)
+        let service = TaskActionService(taskRepository: repository, notificationService: NoOpNotificationService())
         let dueDate = Date(timeIntervalSince1970: 1_700_000_000)
         let task = try repository.create(TaskItem(
             title: "Water plants",
@@ -42,7 +42,7 @@ struct TaskActionServiceTests {
 
     @Test func completingNonRepeatingTaskDoesNotSpawnAnything() throws {
         let repository = InMemoryTaskRepository()
-        let service = TaskActionService(taskRepository: repository)
+        let service = TaskActionService(taskRepository: repository, notificationService: NoOpNotificationService())
         let task = try repository.create(TaskItem(title: "One-off task"))
 
         let next = try service.complete(task)
@@ -53,7 +53,7 @@ struct TaskActionServiceTests {
 
     @Test func archiveThenUnarchiveRestoresActiveStatus() throws {
         let repository = InMemoryTaskRepository()
-        let service = TaskActionService(taskRepository: repository)
+        let service = TaskActionService(taskRepository: repository, notificationService: NoOpNotificationService())
         let task = try repository.create(TaskItem(title: "Shelve me"))
 
         try service.archive(task)
@@ -65,7 +65,7 @@ struct TaskActionServiceTests {
 
     @Test func togglePinFlipsPinnedState() throws {
         let repository = InMemoryTaskRepository()
-        let service = TaskActionService(taskRepository: repository)
+        let service = TaskActionService(taskRepository: repository, notificationService: NoOpNotificationService())
         let task = try repository.create(TaskItem(title: "Pin me", isPinned: false))
 
         try service.togglePin(task)
@@ -77,7 +77,7 @@ struct TaskActionServiceTests {
 
     @Test func deleteRemovesTaskFromRepository() throws {
         let repository = InMemoryTaskRepository()
-        let service = TaskActionService(taskRepository: repository)
+        let service = TaskActionService(taskRepository: repository, notificationService: NoOpNotificationService())
         let task = try repository.create(TaskItem(title: "Remove me"))
 
         try service.delete(task)

@@ -10,13 +10,16 @@ final class AppDependencyContainer {
     let taskRepository: TaskRepositoryProtocol
     let prioritizationService: TaskPrioritizationServiceProtocol
     let taskActionService: TaskActionServiceProtocol
+    let notificationService: NotificationServiceProtocol
 
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
         let repository = SwiftDataTaskRepository(modelContext: modelContainer.mainContext)
         self.taskRepository = repository
         self.prioritizationService = RuleBasedTaskPrioritizationService()
-        self.taskActionService = TaskActionService(taskRepository: repository)
+        let notifications = LocalNotificationService()
+        self.notificationService = notifications
+        self.taskActionService = TaskActionService(taskRepository: repository, notificationService: notifications)
     }
 
     static func makeProductionModelContainer() throws -> ModelContainer {
@@ -44,7 +47,7 @@ final class AppDependencyContainer {
     }
 
     func makeTaskFormViewModel(editing task: TaskItem? = nil) -> TaskFormViewModel {
-        TaskFormViewModel(taskRepository: taskRepository, editingTask: task)
+        TaskFormViewModel(taskRepository: taskRepository, notificationService: notificationService, editingTask: task)
     }
 
     func makeTaskDetailViewModel(task: TaskItem) -> TaskDetailViewModel {
